@@ -3,43 +3,56 @@ package invex.models.entities;
 import java.io.Serializable;
 
 import invex.models.constants.People;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@Valid
+@ApplicationScoped
 public class Employees implements Person, Serializable {
   private static final long serialVersionUID = 1L;
 
+  @Valid
   @NotNull(message = "Employee ID cannot be null")
-  private int employeeId;
+  private Long employeeId;
+  @Valid
   @NotNull(message = "First name cannot be null")
   @Pattern(regexp = "^[A-Za-z]+$", message = "First name must contain only letters")
-  @Pattern(regexp = "^[A-Z][a-z]+$", message = "First name must start with a capital letter")
-  @Pattern(regexp = "^[A-Z][a-z]{2,}$", message = "First name must be at least 3 characters long")
   private String firstName;
+  @Valid
+  @Pattern(regexp = "^[A-Za-z]+$", message = "First name must contain only letters")
   private String secondName;
+  @Valid
   @NotNull(message = "Last name cannot be null")
   @Pattern(regexp = "^[A-Za-z]+$", message = "Last name must contain only letters")
-  @Pattern(regexp = "^[A-Z][a-z]+$", message = "Last name must start with a capital letter")
-  @Pattern(regexp = "^[A-Z][a-z]{2,}$", message = "Last name must be at least 3 characters long")
   private String lastName;
+  @Valid
+  @Pattern(regexp = "^[A-Za-z]+$", message = "First name must contain only letters")
   private String secondLastName;
-  private int age;
+  @Valid
+  @DecimalMin(value = "0", message = "Age must be a positive number")
+  private Long age;
+  @Valid
   @Pattern(regexp = "M|F|O", message = "Sex must be M, F, or O")
   private String sex;
+  @Valid
   @NotNull(message = "Birth date cannot be null")
   @Pattern(regexp = "^[0-9]{2}-[0-9]{2}-[0-9]{4}$", message = "Birth date must be in the format DD-MM-YYYY")
   @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(19|20)\\d{2}$", message = "Birth date must be a valid date")
   private String birth;
+  @Valid
   @NotNull(message = "Position cannot be null")
   private String position;
   private String kind = People.EMPLOYEE;
 
   // Getters and Setters
-  public int getEmployeeId() {
+  public Long getEmployeeId() {
     return employeeId;
   }
 
-  public void setEmployeeId(int employeeId) {
+  public void setEmployeeId(Long employeeId) {
     this.employeeId = employeeId;
   }
 
@@ -84,12 +97,12 @@ public class Employees implements Person, Serializable {
   }
 
   @Override
-  public int getAge() {
+  public Long getAge() {
     return age;
   }
 
   @Override
-  public void setAge(int age) {
+  public void setAge(Long age) {
     this.age = age;
   }
 

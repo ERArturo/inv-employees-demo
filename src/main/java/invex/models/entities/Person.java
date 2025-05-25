@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import invex.models.constants.People;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, property = "kind")
 @JsonSubTypes({ @JsonSubTypes.Type(value = Employees.class, name = People.EMPLOYEE) })
 public interface Person {
-  public void setEmployeeId(int employeeId);
 
   public String getFirstName();
 
@@ -26,9 +27,9 @@ public interface Person {
 
   public void setSecondLastName(String secondLastName);
 
-  public int getAge();
+  public Long getAge();
 
-  public void setAge(int age);
+  public void setAge(Long age);
 
   public String getSex();
 
