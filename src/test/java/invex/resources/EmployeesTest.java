@@ -29,7 +29,7 @@ class EmployeesTest {
         PostEmployeeResponse result = employees.createEmployee(null);
         assertEquals(400L, result.getStatus());
         assertFalse(result.getSuccess());
-        assertTrue(result.getMessage().contains("Request body cannot be null"));
+        assertTrue(result.getMessages().contains("Request body cannot be null"));
     }
 
     @Test
@@ -40,7 +40,7 @@ class EmployeesTest {
         PostEmployeeResponse result = employees.createEmployee(req);
         assertEquals(400L, result.getStatus());
         assertFalse(result.getSuccess());
-        assertTrue(result.getMessage().contains("At least one employee is required"));
+        assertTrue(result.getMessages().contains("At least one employee is required"));
     }
 
     @Test
@@ -76,7 +76,7 @@ class EmployeesTest {
 
         assertTrue(result.getSuccess());
         assertEquals(200L, result.getStatus());
-        assertEquals("Employee(s) created successfully", result.getMessage().get(0));
+        assertEquals("Employee(s) created successfully", result.getMessages().get(0));
         assertNotNull(result.getEmployees());
         assertEquals("John", result.getEmployees().get(0).getFirstName());
     }
@@ -94,19 +94,20 @@ class EmployeesTest {
         List<EmployeesInput> empList = Collections.singletonList(emp);
         PostEmployeeRequest req = new PostEmployeeRequest();
         req.setEmployees(empList);
-
         PostEmployeeResponse result = employees.createEmployee(req);
 
         assertFalse(result.getSuccess());
         assertEquals(400L, result.getStatus());
-        assertEquals(7, result.getMessage().size());
-        assertTrue(result.getMessage().contains("Employee ID cannot be null"));
-        assertTrue(result.getMessage().contains("Birth date must be in the format DD-MM-YYYY"));
-        assertTrue(result.getMessage().contains("Birth date must be a valid date"));
-        assertTrue(result.getMessage().contains("First name must contain only letters"));
-        assertTrue(result.getMessage().contains("Sex must be M, F, or O"));
-        assertTrue(result.getMessage().contains("Position cannot be null"));
-        assertTrue(result.getMessage().contains("Age must be a positive number"));
+        assertEquals(9, result.getMessages().size());
+        assertTrue(result.getMessages().contains("Position cannot be null"));
+        assertTrue(result.getMessages().contains("Second Last name cannot be null"));
+        assertTrue(result.getMessages().contains("Sex must be M, F, O or Empty"));
+        assertTrue(result.getMessages().contains("Birth date must be in the format DD-MM-YYYY"));
+        assertTrue(result.getMessages().contains("Second name cannot be null"));
+        assertTrue(result.getMessages().contains("First name must contain only letters"));
+        assertTrue(result.getMessages().contains("Birth date must be a valid date"));
+        assertTrue(result.getMessages().contains("Employee ID cannot be null"));
+        assertTrue(result.getMessages().contains("Age must be a positive number"));
     }
 
     @Test
@@ -114,14 +115,14 @@ class EmployeesTest {
         PostEmployeeResponse expectedResponse = new PostEmployeeResponse();
         expectedResponse.setStatus(200L);
         expectedResponse.setSuccess(true);
-        expectedResponse.setMessage(List.of("Employees fetched successfully"));
+        expectedResponse.setMessages(List.of("Employees fetched successfully"));
         when(manager.getEmployees()).thenReturn(expectedResponse);
 
         PostEmployeeResponse result = employees.getEmployees();
 
         assertEquals(200L, result.getStatus());
         assertTrue(result.getSuccess());
-        assertEquals("Employees fetched successfully", result.getMessage().get(0));
+        assertEquals("Employees fetched successfully", result.getMessages().get(0));
         verify(manager, times(1)).getEmployees();
     }
 
@@ -133,8 +134,8 @@ class EmployeesTest {
 
         assertEquals(500L, result.getStatus());
         assertFalse(result.getSuccess());
-        assertEquals(1, result.getMessage().size());
-        assertTrue(result.getMessage().get(0).contains("Error fetching employees: DB error"));
+        assertEquals(1, result.getMessages().size());
+        assertTrue(result.getMessages().get(0).contains("Error fetching employees: DB error"));
         verify(manager, times(1)).getEmployees();
     }
 

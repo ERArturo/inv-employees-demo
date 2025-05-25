@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.jboss.logging.Logger;
 
+import invex.models.requests.employee.delete.DeleteEmployeeResponse;
 import invex.models.requests.employee.post.PostEmployeeRequest;
 import invex.models.requests.employee.post.PostEmployeeResponse;
 import invex.service.employees.EmployeesManager;
@@ -15,6 +16,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -37,7 +39,7 @@ public class Employees {
     PostEmployeeResponse response = new PostEmployeeResponse();
     List<String> messages = validate(employee);
     if (!messages.isEmpty()) {
-      response.setMessage(messages);
+      response.setMessages(messages);
       response.setStatus(400L);
       response.setSuccess(false);
       logger.error("Validation errors: " + messages);
@@ -48,7 +50,7 @@ public class Employees {
     } catch (Exception e) {
       messages.clear();
       messages.add("Error creating employee(s)  " + e.getMessage());
-      response.setMessage(messages);
+      response.setMessages(messages);
       response.setStatus(500L);
       response.setSuccess(false);
       logger.error("Error creating employee", e);
@@ -62,13 +64,29 @@ public class Employees {
       return manager.getEmployees();
     } catch (Exception e) {
       PostEmployeeResponse response = new PostEmployeeResponse();
-      response.setMessage(List.of("Error fetching employees: " + e.getMessage()));
+      response.setMessages(List.of("Error fetching employees: " + e.getMessage()));
       response.setStatus(500L);
       response.setSuccess(false);
       logger.error("Error fetching employees", e);
       return response;
     }
   }
+
+  @DELETE
+  @Path("/{id}")
+  public DeleteEmployeeResponse deleteEmployees(Long id) {
+    try {
+      return manager.deleteEmployee(id);
+    } catch (Exception e) {
+      DeleteEmployeeResponse response = new DeleteEmployeeResponse();
+      response.setMessages(List.of("Error deleting employees: " + e.getMessage()));
+      response.setStatus(500L);
+      response.setSuccess(false);
+      logger.error("Error deleting employees", e);
+      return response;
+    }
+  }
+
 
   private List<String> validate(PostEmployeeRequest project) {
     if (project == null) {

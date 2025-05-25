@@ -22,20 +22,21 @@ public class EmployeesInput implements Person, Serializable {
   @Pattern(regexp = "^[A-Za-z]+$", message = "First name must contain only letters")
   private String firstName;
   @Valid
-  @Pattern(regexp = "^[A-Za-z]+$", message = "First name must contain only letters")
+  @NotNull(message = "Second name cannot be null")
   private String secondName;
   @Valid
   @NotNull(message = "Last name cannot be null")
   @Pattern(regexp = "^[A-Za-z]+$", message = "Last name must contain only letters")
   private String lastName;
   @Valid
-  @Pattern(regexp = "^[A-Za-z]+$", message = "First name must contain only letters")
+  @NotNull(message = "Second Last name cannot be null")
   private String secondLastName;
   @Valid
   @DecimalMin(value = "0", message = "Age must be a positive number")
   private Long age;
   @Valid
-  @Pattern(regexp = "M|F|O", message = "Sex must be M, F, or O")
+  @NotNull(message = "Sex name cannot be null")
+  @Pattern(regexp = "M|F|O", message = "Sex must be M, F, O or Empty")
   private String sex;
   @Valid
   @NotNull(message = "Birth date cannot be null")

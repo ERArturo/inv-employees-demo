@@ -12,6 +12,9 @@ import jakarta.persistence.SequenceGenerator;
 @NamedQuery(name = "Employee.findAll",
       query = "SELECT f FROM Employee f ORDER BY f.id",
       hints = @QueryHint(name = "org.hibernate.cacheable", value = "true") )
+@NamedQuery(name = "Employee.deleteById",
+      query = "DELETE FROM Employee f WHERE f.id = :id",
+      hints = @QueryHint(name = "org.hibernate.cacheable", value = "true") )
 public class Employee {
 
   @Id

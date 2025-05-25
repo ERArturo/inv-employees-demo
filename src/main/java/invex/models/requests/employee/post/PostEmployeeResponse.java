@@ -3,20 +3,21 @@ package invex.models.requests.employee.post;
 import java.util.List;
 
 import invex.models.entities.EmployeesInput;
+import invex.models.requests.abstracts.AbstractResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class PostEmployeeResponse {
+public class PostEmployeeResponse  implements AbstractResponse{
     private List<String> messages;
     private Long status;
     private Boolean success;
     private List<EmployeesInput> employees;
 
-    public List<String> getMessage() {
+    public List<String> getMessages() {
         return messages;
     }
 
-    public void setMessage(List<String> messages) {
+    public void setMessages(List<String> messages) {
         this.messages = messages;
     }
 

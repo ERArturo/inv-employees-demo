@@ -36,9 +36,9 @@ public class GetEmployees {
         response.setEmployees(employeesInputs);
         response.setStatus(200L);
         response.setSuccess(true);
-        response.setMessage(List.of("Get Employees successful"));
+        response.setMessages(List.of("Get Employees successful"));
         if (employees.isEmpty()) {
-            response.setMessage(List.of("No employees found"));
+            response.setMessages(List.of("No employees found"));
             response.setStatus(404L);
             response.setSuccess(false);
         }

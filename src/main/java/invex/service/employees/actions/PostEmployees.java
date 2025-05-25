@@ -29,7 +29,7 @@ public class PostEmployees {
       employee.setEmployeeId(emp.getId());
       }
     PostEmployeeResponse response = new PostEmployeeResponse();
-    response.setMessage(List.of("Employee(s) created successfully"));
+    response.setMessages(List.of("Employee(s) created successfully"));
     response.setStatus(200L);
     response.setSuccess(true);
     response.setEmployees(request.getEmployees());

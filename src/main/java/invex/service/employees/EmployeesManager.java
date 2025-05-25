@@ -1,7 +1,9 @@
 package invex.service.employees;
 
+import invex.models.requests.employee.delete.DeleteEmployeeResponse;
 import invex.models.requests.employee.post.PostEmployeeRequest;
 import invex.models.requests.employee.post.PostEmployeeResponse;
+import invex.service.employees.actions.DeleteEmployee;
 import invex.service.employees.actions.GetEmployees;
 import invex.service.employees.actions.PostEmployees;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -18,6 +20,8 @@ public class EmployeesManager {
   PostEmployees postEmployeesAction;
   @Inject
   GetEmployees getEmployeesAction;
+  @Inject
+  DeleteEmployee deleteEmployeeAction;
 
   @Transactional
   public PostEmployeeResponse postEmployees(PostEmployeeRequest request) {
@@ -27,5 +31,10 @@ public class EmployeesManager {
   @Transactional
   public PostEmployeeResponse getEmployees() {
     return getEmployeesAction.getEmployees(em);
-  } 
+  }
+
+  @Transactional
+  public DeleteEmployeeResponse deleteEmployee(Long id) {
+    return deleteEmployeeAction.deleteEmployee(em, id);
+  }
 }
