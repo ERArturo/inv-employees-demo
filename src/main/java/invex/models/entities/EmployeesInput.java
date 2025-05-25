@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Pattern;
 
 @Valid
 @ApplicationScoped
-public class Employees implements Person, Serializable {
+public class EmployeesInput implements Person, Serializable {
   private static final long serialVersionUID = 1L;
 
   @Valid

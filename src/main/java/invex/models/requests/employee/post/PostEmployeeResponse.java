@@ -2,7 +2,7 @@ package invex.models.requests.employee.post;
 
 import java.util.List;
 
-import invex.models.entities.Employees;
+import invex.models.entities.EmployeesInput;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -10,7 +10,7 @@ public class PostEmployeeResponse {
     private List<String> messages;
     private Long status;
     private Boolean success;
-    private List<Employees> employees;
+    private List<EmployeesInput> employees;
 
     public List<String> getMessage() {
         return messages;
@@ -36,11 +36,11 @@ public class PostEmployeeResponse {
         this.success = success;
     }
 
-    public List<Employees> getEmployees() {
+    public List<EmployeesInput> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employees> employees) {
+    public void setEmployees(List<EmployeesInput> employees) {
         this.employees = employees;
     }
 

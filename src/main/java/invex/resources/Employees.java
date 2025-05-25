@@ -8,7 +8,6 @@ import org.jboss.logging.Logger;
 import invex.models.requests.employee.post.PostEmployeeRequest;
 import invex.models.requests.employee.post.PostEmployeeResponse;
 import invex.service.employees.EmployeesManager;
-import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
@@ -16,6 +15,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -32,7 +32,7 @@ public class Employees {
   EmployeesManager manager;
 
   @POST
-  public Uni<PostEmployeeResponse> createEmployee(PostEmployeeRequest employee) {
+  public PostEmployeeResponse createEmployee(PostEmployeeRequest employee) {
 
     PostEmployeeResponse response = new PostEmployeeResponse();
     List<String> messages = validate(employee);
@@ -41,7 +41,7 @@ public class Employees {
       response.setStatus(400L);
       response.setSuccess(false);
       logger.error("Validation errors: " + messages);
-      return Uni.createFrom().item(response);
+      return response;
     }
     try {
       return manager.postEmployees(employee);
@@ -53,7 +53,21 @@ public class Employees {
       response.setSuccess(false);
       logger.error("Error creating employee", e);
     }
-    return Uni.createFrom().item(response);
+    return response;
+  }
+
+  @GET
+  public PostEmployeeResponse getEmployees(){
+    try {
+      return manager.getEmployees();
+    } catch (Exception e) {
+      PostEmployeeResponse response = new PostEmployeeResponse();
+      response.setMessage(List.of("Error fetching employees: " + e.getMessage()));
+      response.setStatus(500L);
+      response.setSuccess(false);
+      logger.error("Error fetching employees", e);
+      return response;
+    }
   }
 
   private List<String> validate(PostEmployeeRequest project) {

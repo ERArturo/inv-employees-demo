@@ -1,21 +1,31 @@
 package invex.service.employees;
 
-import java.util.List;
-
 import invex.models.requests.employee.post.PostEmployeeRequest;
 import invex.models.requests.employee.post.PostEmployeeResponse;
-import io.smallrye.mutiny.Uni;
+import invex.service.employees.actions.GetEmployees;
+import invex.service.employees.actions.PostEmployees;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class EmployeesManager {
 
-  public Uni<PostEmployeeResponse> postEmployees(PostEmployeeRequest request) {
-    PostEmployeeResponse response = new PostEmployeeResponse();
-    response.setMessage(List.of("Employee(s) created successfully"));
-    response.setStatus(200L);
-    response.setSuccess(true);
-    response.setEmployees(request.getEmployees());
-    return Uni.createFrom().item(response);
+  @Inject
+  EntityManager em;
+  @Inject
+  PostEmployees postEmployeesAction;
+  @Inject
+  GetEmployees getEmployeesAction;
+
+  @Transactional
+  public PostEmployeeResponse postEmployees(PostEmployeeRequest request) {
+    return postEmployeesAction.postEmployees(em, request);
   }
+
+  @Transactional
+  public PostEmployeeResponse getEmployees() {
+    return getEmployeesAction.getEmployees(em);
+  } 
 }

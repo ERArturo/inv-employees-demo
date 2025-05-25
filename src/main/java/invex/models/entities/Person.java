@@ -8,7 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, property = "kind")
-@JsonSubTypes({ @JsonSubTypes.Type(value = Employees.class, name = People.EMPLOYEE) })
+@JsonSubTypes({ @JsonSubTypes.Type(value = EmployeesInput.class, name = People.EMPLOYEE) })
 public interface Person {
 
   public String getFirstName();
