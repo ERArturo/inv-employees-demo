@@ -20,7 +20,7 @@ public class EmployeesManager {
   @Inject
   EntityManager em;
   @Inject
-  PostEmployees postEmployeesAction;
+  public PostEmployees postEmployeesAction;
   @Inject
   GetEmployees getEmployeesAction;
   @Inject

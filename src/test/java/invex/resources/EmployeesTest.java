@@ -7,6 +7,7 @@ import invex.models.entities.EmployeesInput;
 import invex.models.requests.employee.post.PostEmployeeRequest;
 import invex.models.requests.employee.post.PostEmployeeResponse;
 import invex.service.employees.EmployeesManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Collections;
@@ -26,28 +27,33 @@ class EmployeesTest {
 
     @Test
     void CreateEmployeeSuccess() throws Exception {
+       // Arrange
         EmployeesInput emp = new EmployeesInput();
-        emp.setEmployeeId(0L); // Assuming employeeId is required and valid
+        emp.setEmployeeId(0L); 
         emp.setFirstName("John");
         emp.setSecondName("Escobedo");
         emp.setLastName("Doe");
         emp.setSecondLastName("Smith");
         emp.setAge(30L);
         emp.setSex("M");
-        emp.setBirth("09-09-1994"); // Valid birth date
+        emp.setBirth("09-09-1994"); 
         emp.setPosition("Developer");
-        emp.setKind("employee"); // Assuming kind is a required field
-
+        emp.setKind("employee"); 
+        
         List<EmployeesInput> empList = Collections.singletonList(emp);
         PostEmployeeRequest req = new PostEmployeeRequest();
         req.setEmployees(empList);
 
+        // Act
         PostEmployeeResponse result = employees.createEmployee(req);
 
+        // Assert
         assertTrue(result.getSuccess());
         assertEquals(200L, result.getStatus());
+        assertNotNull(result.getMessages());
         assertEquals("Employee(s) created successfully", result.getMessages().get(0));
         assertNotNull(result.getEmployees());
+        assertEquals(1, result.getEmployees().size());
         assertEquals("John", result.getEmployees().get(0).getFirstName());
     }
 

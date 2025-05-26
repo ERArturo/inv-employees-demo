@@ -1,0 +1,198 @@
+openapi: 3.0.0
+info:
+  title: Employee API
+  version: "1.0.0"
+  description: API para la gestión de empleados.
+servers:
+  - url: http://localhost:8080
+    description: Servidor de desarrollo
+
+tags:
+  - name: Employee Operations
+    description: Operaciones relacionadas con los empleados
+
+paths:
+  /employees:
+    post:
+      tags:
+        - Employee Operations
+      summary: Crear uno o más empleados nuevos
+      operationId: createEmployee
+      requestBody:
+        description: Objeto de solicitud para crear empleados
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostEmployeeRequest'
+      responses:
+        '200':
+          description: Employee(s) created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostEmployeeResponse'
+    get:
+      tags:
+        - Employee Operations
+      summary: Obtener todos los empleados
+      operationId: getEmployees
+      responses:
+        '200':
+          description: Get Employees successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostEmployeeResponse'
+    put:
+      tags:
+        - Employee Operations
+      summary: Actualizar un empleado existente
+      operationId: updateEmployee
+      requestBody:
+        description: Datos del empleado para actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeesInput'
+      responses:
+        '200':
+          description: Employee updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutEmployeeResponse'
+
+  /employees/{id}:
+    delete:
+      tags:
+        - Employee Operations
+      summary: Eliminar un empleado por ID
+      operationId: deleteEmployees
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del empleado a eliminar
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Employee deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteEmployeeResponse'
+
+components:
+  schemas:
+    EmployeesInput:
+      type: object
+      properties:
+        employeeId:
+          type: integer
+          format: int64
+          description: Identificador único del empleado.
+          nullable: true 
+        firstName:
+          type: string
+          description: Primer nombre del empleado.
+        secondName:
+          type: string
+          description: Segundo nombre del empleado.
+          nullable: true
+        lastName:
+          type: string
+          description: Apellido paterno del empleado.
+        secondLastName:
+          type: string
+          description: Apellido materno del empleado.
+          nullable: true
+        age:
+          type: integer
+          format: int64
+          description: Edad del empleado.
+          nullable: true
+        sex:
+          type: string
+          description: Sexo del empleado (M, F, O).
+          nullable: true
+        birth:
+          type: string
+          description: Fecha de nacimiento del empleado (formato DD-MM-YYYY).
+          nullable: true
+        position:
+          type: string
+          description: Cargo del empleado.
+          nullable: true
+        kind:
+          type: string
+          description: Tipo de empleado.
+          nullable: true
+    PostEmployeeRequest:
+      type: object
+      properties:
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeesInput'
+          description: Lista de empleados para crear.
+
+    PostEmployeeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indica si la operación fue exitosa.
+        status:
+          type: integer
+          format: int64
+          description: Código de estado HTTP.
+        messages:
+          type: array
+          items:
+            type: string
+          description: Lista de mensajes (errores o informativos).
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeesInput'
+          description: Lista de empleados (relevante para GET y POST exitoso).
+          nullable: true
+
+    DeleteEmployeeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indica si la operación fue exitosa.
+        status:
+          type: integer
+          format: int64
+          description: Código de estado HTTP.
+        messages:
+          type: array
+          items:
+            type: string
+          description: Lista de mensajes (errores o informativos).
+
+    PutEmployeeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indica si la operación fue exitosa.
+        status:
+          type: integer
+          format: int64
+          description: Código de estado HTTP.
+        messages:
+          type: array
+          items:
+            type: string
+          description: Lista de mensajes (errores o informativos).
+        employee: # Asumiendo que la respuesta de PUT puede devolver el empleado actualizado
+          $ref: '#/components/schemas/EmployeesInput'
+          nullable: true
