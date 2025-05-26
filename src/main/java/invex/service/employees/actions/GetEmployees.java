@@ -2,6 +2,7 @@ package invex.service.employees.actions;
 
 import java.util.List;
 
+import invex.models.constants.Queries;
 import invex.models.entities.EmployeesInput;
 import invex.models.entities.orm.Employee;
 import invex.models.requests.employee.post.PostEmployeeResponse;
@@ -14,7 +15,7 @@ public class GetEmployees {
     public PostEmployeeResponse getEmployees(EntityManager em) 
     {
         PostEmployeeResponse response = new PostEmployeeResponse();
-        List<Employee> employees = em.createNamedQuery("Employee.findAll", Employee.class)
+        List<Employee> employees = em.createNamedQuery(Queries.EMPLOYEE_FIND_ALL, Employee.class)
                 .getResultList();
 
         List<EmployeesInput> employeesInputs = employees.stream()
@@ -29,7 +30,6 @@ public class GetEmployees {
                     input.setSex(emp.getSex());
                     input.setBirth(emp.getBirth());
                     input.setPosition(emp.getPosition());
-                    input.setKind(emp.getKind());
                     return input;
                 }).toList();
         

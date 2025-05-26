@@ -25,37 +25,7 @@ class EmployeesTest {
     }
 
     @Test
-    void createEmployeeBodyNull() {
-        PostEmployeeResponse result = employees.createEmployee(null);
-        assertEquals(400L, result.getStatus());
-        assertFalse(result.getSuccess());
-        assertTrue(result.getMessages().contains("Request body cannot be null"));
-    }
-
-    @Test
-    void createEmployeeEmptyList() {
-        PostEmployeeRequest req = mock(PostEmployeeRequest.class);
-        when(req.getEmployees()).thenReturn(Collections.emptyList());
-
-        PostEmployeeResponse result = employees.createEmployee(req);
-        assertEquals(400L, result.getStatus());
-        assertFalse(result.getSuccess());
-        assertTrue(result.getMessages().contains("At least one employee is required"));
-    }
-
-    @Test
     void CreateEmployeeSuccess() throws Exception {
-
-                // "employeeId": 2,
-                // "firstName": "Jose",
-                // "secondName": "Ramiro",
-                // "lastName": "Luis",
-                // "secondLastName": "Portillo",
-                // "age": null,
-                // "sex": "M",
-                // "birth": "18-07-1996",
-                // "position": "Developer",
-                // "kind": "employee"
         EmployeesInput emp = new EmployeesInput();
         emp.setEmployeeId(0L); // Assuming employeeId is required and valid
         emp.setFirstName("John");

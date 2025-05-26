@@ -24,7 +24,6 @@ public class PostEmployees {
       emp.setSex(employee.getSex());
       emp.setBirth(employee.getBirth());
       emp.setPosition(employee.getPosition());
-      emp.setKind(employee.getKind());
       em.persist(emp);
       employee.setEmployeeId(emp.getId());
       }

@@ -5,9 +5,11 @@ import java.util.stream.Collectors;
 
 import org.jboss.logging.Logger;
 
+import invex.models.entities.EmployeesInput;
 import invex.models.requests.employee.delete.DeleteEmployeeResponse;
 import invex.models.requests.employee.post.PostEmployeeRequest;
 import invex.models.requests.employee.post.PostEmployeeResponse;
+import invex.models.requests.employee.put.PutEmployeeResponse;
 import invex.service.employees.EmployeesManager;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,6 +21,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -87,16 +90,35 @@ public class Employees {
     }
   }
 
+  @PUT
+  public PutEmployeeResponse updateEmployee(EmployeesInput employee) {
 
-  private List<String> validate(PostEmployeeRequest project) {
-    if (project == null) {
-      return List.of("Request body cannot be null");
-    } else if (project.getEmployees() == null || project.getEmployees().isEmpty()) {
-      return List.of("At least one employee is required");
+    PutEmployeeResponse response = new PutEmployeeResponse();
+    List<String> messages = validate(employee);
+    if (!messages.isEmpty()) {
+      response.setMessages(messages);
+      response.setStatus(400L);
+      response.setSuccess(false);
+      logger.error("Validation errors: " + messages);
+      return response;
     }
+    try {
+      return manager.putEmployee(employee);
+    } catch (Exception e) {
+      messages.clear();
+      messages.add("Error creating employee(s)  " + e.getMessage());
+      response.setMessages(messages);
+      response.setStatus(500L);
+      response.setSuccess(false);
+      logger.error("Error creating employee", e);
+    }
+    return response;
+  }
+
+  private List<String> validate(Object obj) {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
-    return validator.validate(project)
+    return validator.validate(obj)
         .stream()
         .map(ConstraintViolation::getMessage)
         .collect(Collectors.toList());

@@ -1,6 +1,6 @@
 package invex.models.entities.orm;
 
-import invex.models.constants.People;
+import invex.models.constants.Queries;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -9,11 +9,14 @@ import jakarta.persistence.QueryHint;
 import jakarta.persistence.SequenceGenerator;
 
 @Entity
-@NamedQuery(name = "Employee.findAll",
-      query = "SELECT f FROM Employee f ORDER BY f.id",
+@NamedQuery(name = Queries.EMPLOYEE_FIND_ALL,
+      query = Queries.EMPLOYEE_FIND_ALL_QUERY,
       hints = @QueryHint(name = "org.hibernate.cacheable", value = "true") )
-@NamedQuery(name = "Employee.deleteById",
-      query = "DELETE FROM Employee f WHERE f.id = :id",
+@NamedQuery(name = Queries.EMPLOYEE_DELETE_BY_ID,
+      query = Queries.EMPLOYEE_DELETE_BY_ID_QUERY,
+      hints = @QueryHint(name = "org.hibernate.cacheable", value = "true") )
+@NamedQuery(name = Queries.EMPLOYEE_UPDATE_BY_ID,
+      query = Queries.EMPLOYEE_UPDATE_BY_ID_QUERY,
       hints = @QueryHint(name = "org.hibernate.cacheable", value = "true") )
 public class Employee {
 
@@ -29,7 +32,6 @@ public class Employee {
   private String sex;
   private String birth;
   private String position;
-  private String kind = People.EMPLOYEE;
 
   public Long getId() {
     return id;
@@ -103,12 +105,4 @@ public class Employee {
     this.position = position;
   }
 
-  public String getKind() {
-    return kind;
-  }
-
-  public void setKind(String kind) {
-    this.kind = kind;
-  }
-    
 }
