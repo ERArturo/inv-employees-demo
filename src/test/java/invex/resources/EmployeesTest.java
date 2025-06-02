@@ -1,6 +1,7 @@
 package invex.resources;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import invex.models.entities.EmployeesInput;
@@ -43,9 +44,15 @@ class EmployeesTest {
         List<EmployeesInput> empList = Collections.singletonList(emp);
         PostEmployeeRequest req = new PostEmployeeRequest();
         req.setEmployees(empList);
+        PostEmployeeResponse result = new PostEmployeeResponse();
+        result.setSuccess(true);
+        result.setStatus(200L);
+        result.setMessages(List.of("Employee(s) created successfully"));
+        result.setEmployees(empList);
+        when(manager.postEmployees(any(PostEmployeeRequest.class))).thenReturn(result);
 
         // Act
-        PostEmployeeResponse result = employees.createEmployee(req);
+        result = employees.createEmployee(req);
 
         // Assert
         assertTrue(result.getSuccess());
